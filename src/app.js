@@ -9,6 +9,7 @@ const { clerkMiddleware, getAuth, requireAuth } = require('@clerk/express');
 const app = express();
 const prisma = new PrismaClient();
 const PORT = Number(process.env.PORT || 3000);
+const CSRF_TOKEN_BYTES = 32;
 const publishableKey = process.env.CLERK_PUBLISHABLE_KEY || '';
 const secretKey = process.env.CLERK_SECRET_KEY || '';
 const isClerkConfigured =
@@ -40,8 +41,8 @@ const getCsrfToken = (req, res) => {
   const cookies = parseCookies(req);
   let token = cookies._csrfToken;
 
-  if (!token || token.length < 32) {
-    token = crypto.randomBytes(32).toString('hex');
+  if (!token || token.length < CSRF_TOKEN_BYTES) {
+    token = crypto.randomBytes(CSRF_TOKEN_BYTES).toString('hex');
     res.cookie('_csrfToken', token, {
       httpOnly: true,
       sameSite: 'lax',
