@@ -6,6 +6,8 @@
   <% if (error) { %><p class="error"><%= error %></p><% } %>
 
   <form method="post" action="/add" class="form-grid">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
     <label>
       Name *
       <input name="name" required value="<%= values.name %>" />

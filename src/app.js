@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const crypto = require('crypto');
 const path = require('path');
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
@@ -15,12 +16,54 @@ const isClerkConfigured =
   (secretKey.startsWith('sk_test_') || secretKey.startsWith('sk_live_'));
 const authRequired = isClerkConfigured
   ? requireAuth()
-  : (req, res) =>
+  : (req, res) => {
       res
         .status(503)
         .send(
           'Authentication is unavailable. Configure CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY in your .env file.',
         );
+    };
+
+const parseCookies = (req) => {
+  const header = req.headers.cookie;
+
+  if (!header) return {};
+
+  return header.split(';').reduce((cookies, part) => {
+    const [rawKey, ...rest] = part.trim().split('=');
+    if (!rawKey) return cookies;
+    return { ...cookies, [rawKey]: decodeURIComponent(rest.join('=')) };
+  }, {});
+};
+
+const getCsrfToken = (req, res) => {
+  const cookies = parseCookies(req);
+  let token = cookies._csrfToken;
+
+  if (!token || token.length < 32) {
+    token = crypto.randomBytes(32).toString('hex');
+    res.cookie('_csrfToken', token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+    });
+  }
+
+  return token;
+};
+
+const requireCsrf = (req, res, next) => {
+  const cookies = parseCookies(req);
+  const bodyToken = req.body?._csrf;
+  const cookieToken = cookies._csrfToken;
+
+  if (!bodyToken || !cookieToken || bodyToken !== cookieToken) {
+    return res.status(403).send('Invalid CSRF token.');
+  }
+
+  return next();
+};
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -110,6 +153,7 @@ app.get('/fursuit/:id', async (req, res) => {
     fursuit,
     notice: req.query.notice || null,
     error: req.query.error || null,
+    csrfToken: getCsrfToken(req, res),
   });
 });
 
@@ -122,17 +166,19 @@ app.get('/add', authRequired, (req, res) => {
       style: '',
       description: '',
     },
+    csrfToken: getCsrfToken(req, res),
     error: null,
   });
 });
 
-app.post('/add', authRequired, async (req, res) => {
+app.post('/add', authRequired, requireCsrf, async (req, res) => {
   const { userId } = getAuth(req);
   const { name, species, maker, style, description } = req.body;
 
   if (!name || !name.trim()) {
     return res.status(400).render('add', {
       values: { name, species, maker, style, description },
+      csrfToken: getCsrfToken(req, res),
       error: 'Name is required.',
     });
   }
@@ -151,7 +197,7 @@ app.post('/add', authRequired, async (req, res) => {
   return res.redirect(`/fursuit/${created.id}?notice=Fursuit added successfully.`);
 });
 
-app.post('/fursuit/:id/claim', authRequired, async (req, res) => {
+app.post('/fursuit/:id/claim', authRequired, requireCsrf, async (req, res) => {
   const id = Number(req.params.id);
   const { userId } = getAuth(req);
 

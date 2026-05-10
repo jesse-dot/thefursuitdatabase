@@ -19,6 +19,7 @@
   <% if (!fursuit.isClaimed || !fursuit.ownerId) { %>
     <SignedIn>
       <form method="post" action="/fursuit/<%= fursuit.id %>/claim">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <button type="submit">Claim This Fursuit</button>
       </form>
     </SignedIn>
