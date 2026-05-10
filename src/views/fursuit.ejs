@@ -11,7 +11,7 @@
   <p><strong>Style:</strong> <%= fursuit.style || 'Unknown' %></p>
   <p>
     <strong>Owner Status:</strong>
-    <%= fursuit.isClaimed && fursuit.ownerId ? `Claimed by ${fursuit.ownerId}` : 'Unclaimed' %>
+    <%= fursuit.isClaimed && fursuit.ownerId ? 'Claimed' : 'Unclaimed' %>
   </p>
   <p><strong>Description/Biography:</strong></p>
   <p><%= fursuit.description || 'No description yet.' %></p>

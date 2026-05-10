@@ -13,7 +13,7 @@
 
 <script>
   window.addEventListener('load', async () => {
-    if (!window.Clerk || !'<%= clerkPublishableKey %>') return;
+    if (!window.Clerk || !<%- JSON.stringify(clerkEnabled) %>) return;
     await window.Clerk.load();
     window.Clerk.mountSignIn(document.getElementById('sign-in'));
   });

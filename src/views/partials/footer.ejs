@@ -1,7 +1,8 @@
     </main>
     <script>
       window.addEventListener('load', async () => {
-        if (!window.Clerk || !'<%= clerkPublishableKey %>') return;
+        const clerkEnabled = <%- JSON.stringify(clerkEnabled) %>;
+        if (!window.Clerk || !clerkEnabled) return;
 
         await window.Clerk.load();
 

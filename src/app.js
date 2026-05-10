@@ -11,11 +11,16 @@ const PORT = Number(process.env.PORT || 3000);
 const publishableKey = process.env.CLERK_PUBLISHABLE_KEY || '';
 const secretKey = process.env.CLERK_SECRET_KEY || '';
 const isClerkConfigured =
-  /^pk_(test|live)_[a-zA-Z0-9]{10,}$/.test(publishableKey) &&
-  /^sk_(test|live)_[a-zA-Z0-9]{10,}$/.test(secretKey);
+  (publishableKey.startsWith('pk_test_') || publishableKey.startsWith('pk_live_')) &&
+  (secretKey.startsWith('sk_test_') || secretKey.startsWith('sk_live_'));
 const authRequired = isClerkConfigured
   ? requireAuth()
-  : (req, res) => res.status(503).send('Clerk is not configured yet.');
+  : (req, res) =>
+      res
+        .status(503)
+        .send(
+          'Authentication is unavailable. Configure CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY in your .env file.',
+        );
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

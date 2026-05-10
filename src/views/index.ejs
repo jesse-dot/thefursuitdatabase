@@ -39,7 +39,7 @@
         <p><strong>Style:</strong> <%= fursuit.style || 'Unknown' %></p>
         <p>
           <strong>Owner Status:</strong>
-          <%= fursuit.isClaimed && fursuit.ownerId ? `Claimed (${fursuit.ownerId})` : 'Unclaimed' %>
+          <%= fursuit.isClaimed && fursuit.ownerId ? 'Claimed' : 'Unclaimed' %>
         </p>
       </li>
     <% }) %>
