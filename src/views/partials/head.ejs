@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | The Fursuit Database</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script
+      async
+      crossorigin="anonymous"
+      data-clerk-publishable-key="<%= clerkPublishableKey %>"
+      src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+      type="text/javascript"
+    ></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <h1><a href="/">The Fursuit Database</a></h1>
+      <nav>
+        <SignedOut>
+          <a href="/sign-in">Sign in</a>
+        </SignedOut>
+        <SignedIn>
+          <a href="/add">Add Fursuit</a>
+          <UserButton />
+          <div id="user-button"></div>
+        </SignedIn>
+      </nav>
+    </header>
+    <main>

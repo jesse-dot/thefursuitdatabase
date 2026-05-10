@@ -1,0 +1,31 @@
+<%- include('partials/head', { title: fursuit.name }) %>
+
+<article>
+  <h2><%= fursuit.name %></h2>
+
+  <% if (notice) { %><p class="notice"><%= notice %></p><% } %>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+
+  <p><strong>Species:</strong> <%= fursuit.species || 'Unknown' %></p>
+  <p><strong>Maker/Builder:</strong> <%= fursuit.maker || 'Unknown' %></p>
+  <p><strong>Style:</strong> <%= fursuit.style || 'Unknown' %></p>
+  <p>
+    <strong>Owner Status:</strong>
+    <%= fursuit.isClaimed && fursuit.ownerId ? `Claimed by ${fursuit.ownerId}` : 'Unclaimed' %>
+  </p>
+  <p><strong>Description/Biography:</strong></p>
+  <p><%= fursuit.description || 'No description yet.' %></p>
+
+  <% if (!fursuit.isClaimed || !fursuit.ownerId) { %>
+    <SignedIn>
+      <form method="post" action="/fursuit/<%= fursuit.id %>/claim">
+        <button type="submit">Claim This Fursuit</button>
+      </form>
+    </SignedIn>
+    <SignedOut>
+      <p>Sign in to claim this fursuit.</p>
+    </SignedOut>
+  <% } %>
+</article>
+
+<%- include('partials/footer') %>

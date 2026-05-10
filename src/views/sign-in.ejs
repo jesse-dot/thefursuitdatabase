@@ -1,0 +1,22 @@
+<%- include('partials/head', { title: 'Sign In' }) %>
+
+<section>
+  <h2>Sign in</h2>
+  <% if (!clerkEnabled) { %>
+    <p class="error">
+      Clerk is not configured. Set valid CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY values in
+      your .env file.
+    </p>
+  <% } %>
+  <div id="sign-in"></div>
+</section>
+
+<script>
+  window.addEventListener('load', async () => {
+    if (!window.Clerk || !'<%= clerkPublishableKey %>') return;
+    await window.Clerk.load();
+    window.Clerk.mountSignIn(document.getElementById('sign-in'));
+  });
+</script>
+
+<%- include('partials/footer') %>

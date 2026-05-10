@@ -1,0 +1,38 @@
+<%- include('partials/head', { title: 'Add Fursuit' }) %>
+
+<section>
+  <h2>Add a New Fursuit</h2>
+
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+
+  <form method="post" action="/add" class="form-grid">
+    <label>
+      Name *
+      <input name="name" required value="<%= values.name %>" />
+    </label>
+
+    <label>
+      Species
+      <input name="species" value="<%= values.species %>" />
+    </label>
+
+    <label>
+      Maker/Builder
+      <input name="maker" value="<%= values.maker %>" />
+    </label>
+
+    <label>
+      Style
+      <input name="style" value="<%= values.style %>" />
+    </label>
+
+    <label>
+      Description/Biography
+      <textarea name="description" rows="6"><%= values.description %></textarea>
+    </label>
+
+    <button type="submit">Create Fursuit Page</button>
+  </form>
+</section>
+
+<%- include('partials/footer') %>

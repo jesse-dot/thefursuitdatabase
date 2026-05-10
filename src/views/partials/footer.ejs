@@ -1,0 +1,25 @@
+    </main>
+    <script>
+      window.addEventListener('load', async () => {
+        if (!window.Clerk || !'<%= clerkPublishableKey %>') return;
+
+        await window.Clerk.load();
+
+        const signedIn = document.querySelectorAll('SignedIn');
+        const signedOut = document.querySelectorAll('SignedOut');
+
+        if (window.Clerk.user) {
+          signedIn.forEach((el) => (el.style.display = 'inline-flex'));
+          signedOut.forEach((el) => (el.style.display = 'none'));
+          const userButtonDiv = document.getElementById('user-button');
+          if (userButtonDiv) {
+            window.Clerk.mountUserButton(userButtonDiv);
+          }
+        } else {
+          signedIn.forEach((el) => (el.style.display = 'none'));
+          signedOut.forEach((el) => (el.style.display = 'inline-flex'));
+        }
+      });
+    </script>
+  </body>
+</html>
