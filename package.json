@@ -1,0 +1,32 @@
+{
+  "name": "thefursuitdatabase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesse-dot/thefursuitdatabase.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jesse-dot/thefursuitdatabase/issues"
+  },
+  "homepage": "https://github.com/jesse-dot/thefursuitdatabase#readme",
+  "dependencies": {
+    "@clerk/express": "^2.1.15",
+    "@prisma/client": "^6.19.3",
+    "dotenv": "^17.4.2",
+    "ejs": "^5.0.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^6.19.3"
+  }
+}
