@@ -1,0 +1,36 @@
+{
+  "name": "thefursuitdatabase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"No tests are configured yet\"",
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesse-dot/thefursuitdatabase.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jesse-dot/thefursuitdatabase/issues"
+  },
+  "homepage": "https://github.com/jesse-dot/thefursuitdatabase#readme",
+  "dependencies": {
+    "@clerk/express": "^2.1.15",
+    "@prisma/client": "^6.19.3",
+    "dotenv": "^17.4.2",
+    "ejs": "^5.0.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^6.19.3"
+  }
+}

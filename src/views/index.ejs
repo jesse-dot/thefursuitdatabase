@@ -1,0 +1,49 @@
+<%- include('partials/head', { title: 'Home' }) %>
+
+<section>
+  <h2>Fursuit Wiki Directory</h2>
+  <p>Browse recently added fursuits, or search by name/species/maker/style.</p>
+
+  <% if (error) { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/" method="get" class="filters">
+    <input
+      type="search"
+      name="q"
+      placeholder="Search..."
+      value="<%= filters.q %>"
+      aria-label="Search"
+    />
+
+    <select name="style" aria-label="Filter by style">
+      <option value="">All styles</option>
+      <% styles.forEach((style) => { %>
+        <option value="<%= style %>" <%= filters.style === style ? 'selected' : '' %>><%= style %></option>
+      <% }) %>
+    </select>
+
+    <button type="submit">Apply</button>
+  </form>
+
+  <ul class="card-list">
+    <% if (!fursuits.length) { %>
+      <li>No fursuits found yet.</li>
+    <% } %>
+    <% fursuits.forEach((fursuit) => { %>
+      <li class="card">
+        <h3><a href="/fursuit/<%= fursuit.id %>"><%= fursuit.name %></a></h3>
+        <p><strong>Species:</strong> <%= fursuit.species || 'Unknown' %></p>
+        <p><strong>Maker:</strong> <%= fursuit.maker || 'Unknown' %></p>
+        <p><strong>Style:</strong> <%= fursuit.style || 'Unknown' %></p>
+        <p>
+          <strong>Owner Status:</strong>
+          <%= fursuit.isClaimed && fursuit.ownerId ? 'Claimed' : 'Unclaimed' %>
+        </p>
+      </li>
+    <% }) %>
+  </ul>
+</section>
+
+<%- include('partials/footer') %>
